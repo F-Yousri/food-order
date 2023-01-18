@@ -18,7 +18,7 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'status' => fake()->randomElement(OrderStatus::cases())
+            'status' => fake()->randomElement(OrderStatus::cases()),
         ];
     }
 }

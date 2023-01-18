@@ -115,11 +115,11 @@ return [
         ],
     ],
 
-    /* 
+    /*
     |--------------------------------------------------------------------------
     |Merchant Email To Receive Warnings
     |--------------------------------------------------------------------------
     */
 
-    'merchant_email' => env('MERCHANT_EMAIL', 'test@test.com')
+    'merchant_email' => env('MERCHANT_EMAIL', 'test@test.com'),
 ];

@@ -13,6 +13,9 @@ class Ingredient extends Model
 {
     use HasFactory;
 
+    /**
+     * @throws Illuminate\Contracts\Cache\LockTimeoutException
+     */
     public function consume(int $weight): void
     {
         // acquire a distributed lock to avoid overlapping
@@ -20,15 +23,15 @@ class Ingredient extends Model
 
         try {
             $lock->block(2);
-         
+
             // consume the weight
             $originalStock = $this->stock;
             $this->stock -= $weight;
             $this->save();
 
             $warningLimit = $this->recommended_stock / 2;
-            
-            if($originalStock > $warningLimit && $this->stock <= $warningLimit) {
+
+            if ($originalStock > $warningLimit && $this->stock <= $warningLimit) {
                 Mail::to(config('mail.merchant_email'))
                     ->queue(new IngrediantRunningLow($this->name));
             }
@@ -38,7 +41,5 @@ class Ingredient extends Model
         } finally {
             optional($lock)->release();
         }
-      
-        
     }
 }

@@ -18,15 +18,13 @@ class Order extends Model
     }
 
     /**
-     * 
-     * 
      * @throws \Throwable
      */
     public function prepare()
     {
         // A transaction to ensure all is prepared or nothing
         try {
-            DB::transaction(function() {
+            DB::transaction(function () {
                 $this->products->each(fn ($product) => $product->prepare($product->pivot->quantity));
                 $this->status = OrderStatus::Completed;
                 $this->save();

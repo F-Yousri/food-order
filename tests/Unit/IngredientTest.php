@@ -34,7 +34,6 @@ class IngredientTest extends TestCase
         $ingredient->consume(100);
 
         Mail::assertQueued(IngrediantRunningLow::class);
-
     }
 
     public function test_it_doesnt_send_email_when_original_stock_below_50_percent()
@@ -48,13 +47,13 @@ class IngredientTest extends TestCase
     }
 
     public function test_it_fails_to_consume_without_getting_lock()
-    {   
+    {
         Mail::fake();
 
         $this->expectException(LockTimeoutException::class);
 
         $ingredient = Ingredient::factory()->create(['stock' => 90, 'recommended_stock' => 200]);
-        
+
         $lock = Cache::lock("ingredient_{$ingredient->id}", 6)->get();
         $ingredient->consume(40);
         $lock->release();
