@@ -20,7 +20,7 @@ class Ingredient extends Model
         $this->save();
 
         if($originalStock > ($this->recommended_stock / 2) && $this->stock <= ($this->recommended_stock / 2)) {
-            Mail::to('test@test.com')
+            Mail::to(config('mail.merchant_email'))
                 ->queue(new IngrediantRunningLow($this->name));
         }
         
