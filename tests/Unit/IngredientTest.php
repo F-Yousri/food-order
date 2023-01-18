@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use App\Mail\IngrediantRunningLow;
 use App\Models\Ingredient;
+use Cache;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mail;
 use Tests\TestCase;
@@ -43,5 +45,18 @@ class IngredientTest extends TestCase
         $ingredient->consume(40);
 
         Mail::assertNotQueued(IngrediantRunningLow::class);
+    }
+
+    public function test_it_fails_to_consume_without_getting_lock()
+    {   
+        Mail::fake();
+
+        $this->expectException(LockTimeoutException::class);
+
+        $ingredient = Ingredient::factory()->create(['stock' => 90, 'recommended_stock' => 200]);
+        
+        $lock = Cache::lock("ingredient_{$ingredient->id}", 6)->get();
+        $ingredient->consume(40);
+        $lock->release();
     }
 }
