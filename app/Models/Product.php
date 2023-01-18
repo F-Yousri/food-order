@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,7 +18,9 @@ class Product extends Model
 
     public function prepare()
     {
-        // TODO: must be done in a transaction to ensure all is consumed or nothing
-        $this->ingredients->each(fn ($ingredient) => $ingredient->consume($ingredient->pivot->weight));
+        // A transaction to ensure all is consumed or nothing
+        DB::transaction(function() {
+            $this->ingredients->each(fn ($ingredient) => $ingredient->consume($ingredient->pivot->weight));
+        });
     }
 }
