@@ -21,7 +21,7 @@ class IngredientFactory extends Factory
         return [
             'name' => fake()->meatName(),
             'stock' => fake()->numberBetween(100, 50000),
-            'recommended-stock' => fake()->numberBetween(10000, 50000),
+            'recommended_stock' => fake()->numberBetween(10000, 50000),
         ];
     }
 }

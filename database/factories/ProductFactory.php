@@ -19,7 +19,7 @@ class ProductFactory extends Factory
         fake()->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant(fake()));
 
         return [
-          'name' => fake()->foodName(),
+            'name' => fake()->foodName(),
         ];
     }
 }
