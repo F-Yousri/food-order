@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,11 +15,11 @@ class Product extends Model
         return $this->belongsToMany(Ingredient::class, 'products_ingredients')->withPivot(['weight']);
     }
 
-    public function prepare()
+    /**
+     * @throws Illuminate\Contracts\Cache\LockTimeoutException
+     */
+    public function prepare(int $quantity = 1)
     {
-        // A transaction to ensure all is consumed or nothing
-        DB::transaction(function() {
-            $this->ingredients->each(fn ($ingredient) => $ingredient->consume($ingredient->pivot->weight));
-        });
+        $this->ingredients->each(fn ($ingredient) => $ingredient->consume($quantity * $ingredient->pivot->weight));
     }
 }
