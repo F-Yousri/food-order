@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\HighDemandException;
 use App\Mail\IngrediantRunningLow;
 use App\Models\Ingredient;
 use Cache;
-use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mail;
 use Tests\TestCase;
@@ -50,7 +50,7 @@ class IngredientTest extends TestCase
     {
         Mail::fake();
 
-        $this->expectException(LockTimeoutException::class);
+        $this->expectException(HighDemandException::class);
 
         $ingredient = Ingredient::factory()->create(['stock' => 90, 'recommended_stock' => 200]);
 

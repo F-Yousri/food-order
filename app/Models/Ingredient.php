@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Exceptions\HighDemandException;
+use App\Exceptions\InsuffecientIngredientsException;
 use App\Mail\IngrediantRunningLow;
 use Cache;
 use Illuminate\Contracts\Cache\LockTimeoutException;
@@ -37,7 +39,11 @@ class Ingredient extends Model
             }
         } catch (LockTimeoutException $e) {
             // retry or inform user we can't process order...
-            throw $e;
+            throw new HighDemandException();
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == 22003) {// Ingredients weight needed unavailable
+                throw new InsuffecientIngredientsException();
+            }
         } finally {
             optional($lock)->release();
         }
