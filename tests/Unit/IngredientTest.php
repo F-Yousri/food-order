@@ -54,7 +54,8 @@ class IngredientTest extends TestCase
 
         $ingredient = Ingredient::factory()->create(['stock' => 90, 'recommended_stock' => 200]);
 
-        $lock = Cache::lock("ingredient_{$ingredient->id}", 6)->get();
+        $lock = Cache::lock("ingredient_{$ingredient->id}", 6);
+        $lock->get();
         $ingredient->consume(40);
         $lock->release();
     }

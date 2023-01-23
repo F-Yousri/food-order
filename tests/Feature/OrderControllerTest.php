@@ -48,7 +48,7 @@ class OrderControllerTest extends TestCase
     public function test_it_returns_insuffecient_ingredients_response()
     {
         Product::factory()->hasAttached(Ingredient::factory(['stock' => 100]), ['weight' => 200])->create(['id' => 1]);
-        
+
         $this->json('POST', route('orders.store'), [
             'products' => [
                 ['product_id' => 1, 'quantity' => 1],
@@ -59,7 +59,7 @@ class OrderControllerTest extends TestCase
     public function test_it_returns_high_demand_response()
     {
         Product::factory()->hasAttached(Ingredient::factory(['stock' => 100]), ['weight' => 100])->create(['id' => 1]);
-        $lock = Cache::lock("ingredient_1", 6);
+        $lock = Cache::lock('ingredient_1', 6);
         $lock->get();
 
         $this->json('POST', route('orders.store'), [

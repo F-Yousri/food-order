@@ -16,7 +16,8 @@ class Ingredient extends Model
     use HasFactory;
 
     /**
-     * @throws Illuminate\Contracts\Cache\LockTimeoutException
+     * @throws App\Exceptions\HighDemandException
+     * @throws App\Exceptions\InsuffecientIngredientsException
      */
     public function consume(int $weight): void
     {
