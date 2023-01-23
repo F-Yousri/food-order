@@ -19,7 +19,7 @@ class IngredientFactory extends Factory
         fake()->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant(fake()));
 
         return [
-            'name' => fake()->meatName(),
+            'name' => fake()->unique()->meatName(),
             'stock' => fake()->numberBetween(100, 50000),
             'recommended_stock' => fake()->numberBetween(10000, 50000),
         ];
