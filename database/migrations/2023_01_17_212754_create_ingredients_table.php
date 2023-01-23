@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->unsignedInteger('stock')->comment('weight in grams');
             $table->unsignedInteger('recommended_stock')->comment('weight in grams');
             $table->timestamps();
