@@ -27,7 +27,7 @@ If you have docker and docker-compose installed, then installation steps are:
 - To request the order API using an API platform like Postman use the following request:
 ```http
    POST http://localhost/orders
-   Content-Type: application/json
+   Accept: application/json
    {
         "products": [
             {"product_id" : 1, "quantity": 1}
