@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
-use Request;
+use Illuminate\Http\Request;
 
 class HighDemandException extends Exception
 {

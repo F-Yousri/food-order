@@ -13,10 +13,12 @@ class OrdersController extends Controller
         $order = new Order();
         $order->status = OrderStatus::Preparing;
         $order->save();
+
         $products = $request->validated()['products'];
         $order->products()->sync(collect($products)
             ->mapWithKeys(
                 fn ($product) => [$product['product_id'] => ['quantity' => $product['quantity']]]));
+
         $order->prepare();
 
         return response()->json([], 204);
